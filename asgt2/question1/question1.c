@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <pthread.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 int collatz(int n) {
     int rVal = 0;
@@ -12,6 +15,9 @@ int collatz(int n) {
 }
 
 int main() {
+    pid_t pid;
+    printf("The current process ID is: %d\n", pid);
+
     int n = 1;
     printf("Enter a number:\n"); // Scan user input
     scanf("%d", &n);
@@ -21,11 +27,17 @@ int main() {
         scanf("%d", &n);
     }
 
-    printf("%d ", n);
-    do {
-        n = collatz(n);
+    pid = fork();
+    printf("New child with process ID %d created\n", pid);
+    if (pid == 0) {
         printf("%d ", n);
-    } while (n != 1);
-
+        do {
+            n = collatz(n);
+            printf("%d ", n);
+        } while (n != 1);
+    } else {
+        printf("Waiting for child\n");
+        wait(NULL);
+    }
     return 0;
 }
