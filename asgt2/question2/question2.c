@@ -16,8 +16,7 @@ void range(int array[]) {
     }
     totalRange = maxNumber - minNumber;
 
-    printf("Range of array: %d\n",totalRange);
-
+    pthread_exit(NULL);
 }
 
 void insertionSort(int array[]) {
@@ -46,8 +45,7 @@ void interquartileRange(int array[]) {
         int thirdQuartile = (thirdQSum/2);
         iqr = thirdQuartile - firstQuartile;
     }
-
-    printf("IQR of array is: %d\n", iqr);
+    pthread_exit(NULL);
 }
 
 void stdDeviation(int array[]) {
@@ -65,7 +63,8 @@ void stdDeviation(int array[]) {
     }
     int variance = sumOfSquares/length;
     r = sqrt(variance);
-    printf("Standard deviation is: %f\n", r);
+
+    pthread_exit(NULL);
 }
 
 int main() {
@@ -76,11 +75,22 @@ int main() {
         printf("Enter number %d:\n", i+1);
         scanf("%d", &array[i]);
     }
+
     insertionSort(array);
 
-    range(array);
-    interquartileRange(array);
-    stdDeviation(array);
+    pthread_t range_thread, iqr_thread, r_thread;
+    pthread_create(&range_thread, NULL, range, array);
+    pthread_create(&iqr_thread, NULL, interquartileRange, array);
+    pthread_create(&r_thread, NULL, stdDeviation, array);
+
+    pthread_join(range_thread, NULL);
+    printf("Range of array: %d\n",totalRange);
+
+    pthread_join(iqr_thread,NULL);
+    printf("IQR of array is: %d\n", iqr);
+
+    pthread_join(r_thread,NULL);
+    printf("Standard deviation is: %f\n", r);
 
     return 0;
 }
