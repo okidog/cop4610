@@ -40,8 +40,10 @@ void interquartileRange(int array[]) {
         int thirdQuartile = array[thirdQuartileIndex];
         iqr = thirdQuartile - firstQuartile;
     } else {
-        int firstQuartile = ((array[length/4] + array[(length/4) + 1])/2);
-        int thirdQuartile = ((array[thirdQuartileIndex] + array[thirdQuartileIndex+1])/2);
+        int firstQSum = array[length/4 - 1] + array[(length/4)];
+        int firstQuartile = (firstQSum/2);
+        int thirdQSum = array[thirdQuartileIndex-1] + array[thirdQuartileIndex];
+        int thirdQuartile = (thirdQSum/2);
         iqr = thirdQuartile - firstQuartile;
     }
 
@@ -61,7 +63,8 @@ void stdDeviation(int array[]) {
     for (int i = 0; i < length; i++) {
         sumOfSquares += pow(array[i] - mean, 2);
     }
-    r = powf(sumOfSquares/length, 1/2);
+    int variance = sumOfSquares/length;
+    r = sqrt(variance);
     printf("Standard deviation is: %f\n", r);
 }
 
