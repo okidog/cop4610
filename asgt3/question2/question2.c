@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <semaphore.h>
 #include <time.h>
 
 # define BARISTA_COUNT 4
@@ -13,7 +12,6 @@ pthread_mutex_t machines[BARISTA_COUNT];
 float generateTime() {
     float randTime = rand() % 1000;
     randTime = randTime / 1000;
-    printf("Process will sleep for %f seconds\n", randTime);
     return randTime;
 }
 
