@@ -1,8 +1,6 @@
-#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <time.h>
 #include <semaphore.h>
 
 #define CAR_AMOUNT 10
@@ -14,6 +12,7 @@ sem_t parking_spaces;
 
 void* car (void* id) {
     int carId = *(int*)id;
+
     printf("Car %d arrived at the parking lot.\n", carId);
 
     sem_wait(&parking_spaces);
@@ -32,7 +31,7 @@ int main() {
     sem_init(&parking_spaces, 0, PARKING_SPACES);
 
     for (int i = 0; i < CAR_AMOUNT, i++;) {
-        carIds[i] = i;
+        carIds[i] = i+1;
         pthread_create(&cars[i], NULL, car, &carIds[i]);
         sleep(CAR_DELAY);
     }
